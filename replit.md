@@ -108,6 +108,7 @@ This is a modern video streaming platform built with React and Express.js, desig
 ```
 Changelog:
 - June 21, 2025. Initial setup
+- June 21, 2025. Removed promotional hero banner and feature badges for cleaner UI
 ```
 
 ## User Preferences

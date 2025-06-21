@@ -152,22 +152,7 @@ export default function Home() {
       <Navigation />
       
       <main className="container mx-auto px-4 py-6">
-        {/* Hero Banner */}
-        {!searchQuery && !categoryFilter && (
-          <div className="gradient-hero rounded-xl p-8 mb-8 relative overflow-hidden">
-            <div className="relative z-10">
-              <h1 className="text-4xl font-bold mb-4 text-white">Premium Adult Entertainment</h1>
-              <p className="text-xl text-purple-100 mb-6">Discover thousands of high-quality videos from top creators</p>
-              <div className="flex flex-wrap gap-4">
-                <span className="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm text-white">💸 Zero Hosting Costs</span>
-                <span className="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm text-white">⚖️ Legal Risk Reduced</span>
-                <span className="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm text-white">🛠️ Fast to Implement</span>
-                <span className="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm text-white">📈 Focus on Growth</span>
-              </div>
-            </div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white bg-opacity-10 rounded-full -mr-32 -mt-32"></div>
-          </div>
-        )}
+
 
         {/* Search Results */}
         {searchQuery && (
@@ -283,12 +268,12 @@ export default function Home() {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4 text-white">Features</h3>
+              <h3 className="font-semibold mb-4 text-white">Browse</h3>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li>💸 Zero Hosting Costs</li>
-                <li>⚖️ Legal Risk Reduced</li>
-                <li>🛠️ Fast Implementation</li>
-                <li>📈 Growth Focused</li>
+                <li><a href="/?category=trending" className="hover:text-white transition-colors">Trending</a></li>
+                <li><a href="/?category=featured" className="hover:text-white transition-colors">Featured</a></li>
+                <li><a href="/admin" className="hover:text-white transition-colors">Admin Panel</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Search</a></li>
               </ul>
             </div>
           </div>
