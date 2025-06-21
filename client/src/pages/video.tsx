@@ -127,7 +127,9 @@ export default function VideoPage() {
                 marginHeight="0"
                 scrolling="no"
                 allowFullScreen
-                allow="autoplay; encrypted-media; fullscreen"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"
+                allow="autoplay; encrypted-media; fullscreen; accelerometer; gyroscope; picture-in-picture"
+                referrerPolicy="no-referrer-when-downgrade"
                 className="border-0"
                 title={video.title}
                 onLoad={() => {

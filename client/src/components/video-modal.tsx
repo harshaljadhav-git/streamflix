@@ -41,7 +41,7 @@ export default function VideoModal({ video, isOpen, onClose }: VideoModalProps) 
         </DialogHeader>
         
         <div className="flex-1 flex flex-col">
-          <div className="flex-1 mb-4">
+          <div className="flex-1 mb-4 relative">
             <iframe
               src={video.embedUrl}
               width="100%"
@@ -51,10 +51,24 @@ export default function VideoModal({ video, isOpen, onClose }: VideoModalProps) 
               marginHeight="0"
               scrolling="no"
               allowFullScreen
-              allow="autoplay; encrypted-media; fullscreen"
+              sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"
+              allow="autoplay; encrypted-media; fullscreen; accelerometer; gyroscope; picture-in-picture"
+              referrerPolicy="no-referrer-when-downgrade"
               className="rounded border-0"
               title={video.title}
+              onError={() => console.log('Iframe failed to load')}
             />
+            {/* Fallback link if iframe fails */}
+            <div className="absolute top-2 right-2 z-10">
+              <a
+                href={video.embedUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm"
+              >
+                Open in New Tab
+              </a>
+            </div>
           </div>
           
           <div className="space-y-3">
