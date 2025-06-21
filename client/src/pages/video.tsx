@@ -1,4 +1,5 @@
 import { useParams } from "wouter";
+import React, { useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { ArrowLeft, Eye, Clock, Tag } from "lucide-react";
 import { Link } from "wouter";
@@ -19,13 +20,27 @@ export default function VideoPage() {
     enabled: !!videoId,
   });
 
+  const playerRef = useRef<HTMLDivElement>(null);
+
+  const handleFullscreen = () => {
+    if (playerRef.current) {
+      if (playerRef.current.requestFullscreen) {
+        playerRef.current.requestFullscreen();
+      } else if ((playerRef.current as any).webkitRequestFullscreen) {
+        (playerRef.current as any).webkitRequestFullscreen();
+      } else if ((playerRef.current as any).msRequestFullscreen) {
+        (playerRef.current as any).msRequestFullscreen();
+      }
+    }
+  };
+
   const { data: relatedVideos = [] } = useQuery<Video[]>({
-    queryKey: [video ? `/api/videos/category/${video.category}` : ''],
+    queryKey: [video ? `/api/videos/category/${video.category}` : ""],
     enabled: !!video,
   });
 
   const incrementViewsMutation = useMutation({
-    mutationFn: () => apiRequest('POST', `/api/videos/${videoId}/view`),
+    mutationFn: () => apiRequest("POST", `/api/videos/${videoId}/view`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/videos/${videoId}`] });
     },
@@ -69,8 +84,12 @@ export default function VideoPage() {
         <Navigation />
         <main className="container mx-auto px-4 py-6">
           <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-white mb-4">Video Not Found</h1>
-            <p className="text-gray-400 mb-6">The video you're looking for doesn't exist.</p>
+            <h1 className="text-2xl font-bold text-white mb-4">
+              Video Not Found
+            </h1>
+            <p className="text-gray-400 mb-6">
+              The video you're looking for doesn't exist.
+            </p>
             <Link href="/">
               <Button>
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -90,24 +109,29 @@ export default function VideoPage() {
   };
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   // Filter out current video from related videos
-  const filteredRelatedVideos = relatedVideos.filter(v => v.id !== video.id).slice(0, 8);
+  const filteredRelatedVideos = relatedVideos
+    .filter((v) => v.id !== video.id)
+    .slice(0, 8);
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="container mx-auto px-4 py-6">
         {/* Back Button */}
         <Link href="/">
-          <Button variant="ghost" className="text-gray-400 hover:text-white mb-6">
+          <Button
+            variant="ghost"
+            className="text-gray-400 hover:text-white mb-6"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Videos
           </Button>
@@ -117,14 +141,17 @@ export default function VideoPage() {
           {/* Main Video Content */}
           <div className="lg:col-span-2">
             {/* Video Player */}
-            <div className="bg-secondary rounded-lg overflow-hidden mb-6">
+            <div
+              className="bg-secondary rounded-lg overflow-hidden mb-6"
+              ref={playerRef}
+            >
               <iframe
                 src={video.embedUrl}
                 width="100%"
                 height="480"
                 frameBorder="0"
-                marginWidth="0"
-                marginHeight="0"
+                marginWidth={0}
+                marginHeight={0}
                 scrolling="no"
                 allowFullScreen
                 sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"
@@ -137,6 +164,13 @@ export default function VideoPage() {
                   incrementViewsMutation.mutate();
                 }}
               />
+              <button
+                onClick={handleFullscreen}
+                className="mt-2 ml-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+                style={{ position: "absolute" }}
+              >
+                Fullscreen
+              </button>
             </div>
 
             {/* Video Info */}
@@ -176,14 +210,19 @@ export default function VideoPage() {
 
           {/* Sidebar - Related Videos */}
           <div>
-            <h2 className="text-xl font-bold text-white mb-6">Related Videos</h2>
-            
+            <h2 className="text-xl font-bold text-white mb-6">
+              Related Videos
+            </h2>
+
             {filteredRelatedVideos.length === 0 ? (
               <p className="text-gray-400">No related videos found.</p>
             ) : (
               <div className="space-y-4">
                 {filteredRelatedVideos.map((relatedVideo) => (
-                  <Link key={relatedVideo.id} href={`/video/${relatedVideo.id}`}>
+                  <Link
+                    key={relatedVideo.id}
+                    href={`/video/${relatedVideo.id}`}
+                  >
                     <div className="flex space-x-3 bg-secondary rounded-lg p-3 hover:bg-gray-700 transition-colors cursor-pointer">
                       <img
                         src={relatedVideo.thumbnail}
@@ -191,7 +230,8 @@ export default function VideoPage() {
                         className="h-20 w-32 object-cover rounded flex-shrink-0"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=250&fit=crop";
+                          target.src =
+                            "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=250&fit=crop";
                         }}
                       />
                       <div className="flex-1 min-w-0">
