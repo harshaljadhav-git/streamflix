@@ -46,7 +46,12 @@ export default function VideoModal({ video, isOpen, onClose }: VideoModalProps) 
               src={video.embedUrl}
               width="100%"
               height="100%"
+              frameBorder="0"
+              marginWidth="0"
+              marginHeight="0"
+              scrolling="no"
               allowFullScreen
+              allow="autoplay; encrypted-media; fullscreen"
               className="rounded border-0"
               title={video.title}
             />

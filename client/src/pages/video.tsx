@@ -122,7 +122,12 @@ export default function VideoPage() {
                 src={video.embedUrl}
                 width="100%"
                 height="480"
+                frameBorder="0"
+                marginWidth="0"
+                marginHeight="0"
+                scrolling="no"
                 allowFullScreen
+                allow="autoplay; encrypted-media; fullscreen"
                 className="border-0"
                 title={video.title}
                 onLoad={() => {
