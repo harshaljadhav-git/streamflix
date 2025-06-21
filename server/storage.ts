@@ -73,6 +73,13 @@ export class MemStorage implements IStorage {
         thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop",
         tags: ["vidoza", "premium", "hd"],
         category: "Professional"
+      },
+      {
+        title: "Working Demo Video",
+        embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=250&fit=crop",
+        tags: ["demo", "working", "test"],
+        category: "Featured"
       }
     ];
 
