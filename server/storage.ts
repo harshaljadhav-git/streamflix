@@ -75,10 +75,10 @@ export class MemStorage implements IStorage {
         category: "Professional"
       },
       {
-        title: "Working Demo Video",
-        embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        thumbnail: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=250&fit=crop",
-        tags: ["demo", "working", "test"],
+        title: "StreamTape Premium Content",
+        embedUrl: "https://streamtape.com/e/8VPYkkpPr4UoRJr/",
+        thumbnail: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=400&h=250&fit=crop",
+        tags: ["streamtape", "premium", "hd"],
         category: "Featured"
       }
     ];
