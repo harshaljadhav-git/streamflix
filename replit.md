@@ -112,6 +112,8 @@ Changelog:
 - June 21, 2025. Created dedicated pages for new releases, videos, categories, channels, and featured content
 - June 21, 2025. Implemented pagination system with 6 videos per page on homepage and 18 on videos page
 - June 21, 2025. Updated navigation to use dedicated page routes instead of query parameters
+- June 21, 2025. Added admin login authentication with username/password protection
+- June 21, 2025. Enhanced iframe player with security attributes and fallback options for embedding issues
 ```
 
 ## User Preferences
