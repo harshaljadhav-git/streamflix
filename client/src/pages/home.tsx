@@ -272,7 +272,7 @@ export default function Home() {
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="/?category=trending" className="hover:text-white transition-colors">Trending</a></li>
                 <li><a href="/?category=featured" className="hover:text-white transition-colors">Featured</a></li>
-                <li><a href="/admin" className="hover:text-white transition-colors">Admin Panel</a></li>
+                <li><a href="/?category=popular" className="hover:text-white transition-colors">Popular</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Search</a></li>
               </ul>
             </div>

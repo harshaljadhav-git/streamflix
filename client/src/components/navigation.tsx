@@ -56,13 +56,7 @@ export default function Navigation() {
             </div>
           </form>
 
-          {/* Admin Toggle */}
-          <Link href="/admin">
-            <Button className="bg-pink-accent hover:bg-pink-600">
-              <Settings className="h-4 w-4 mr-2" />
-              Admin
-            </Button>
-          </Link>
+
         </div>
 
         {/* Navigation Menu */}
