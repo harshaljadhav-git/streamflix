@@ -17,11 +17,11 @@ export default function Navigation() {
 
   const navItems = [
     { href: "/", label: "Home", icon: Home, active: location === "/" },
-    { href: "/?category=new", label: "NEW RELEASES", icon: Calendar },
-    { href: "/?category=videos", label: "VIDEOS", icon: PlayCircle },
-    { href: "/?category=channels", label: "CHANNELS", icon: Grid3X3 },
-    { href: "/?category=categories", label: "CATEGORIES", icon: Folder },
-    { href: "/?featured=true", label: "FEATURED", icon: Star },
+    { href: "/new-releases", label: "NEW RELEASES", icon: Calendar, active: location === "/new-releases" },
+    { href: "/videos", label: "VIDEOS", icon: PlayCircle, active: location === "/videos" },
+    { href: "/channels", label: "CHANNELS", icon: Grid3X3, active: location === "/channels" },
+    { href: "/categories", label: "CATEGORIES", icon: Folder, active: location === "/categories" },
+    { href: "/featured", label: "FEATURED", icon: Star, active: location === "/featured" },
   ];
 
   return (

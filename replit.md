@@ -109,6 +109,9 @@ This is a modern video streaming platform built with React and Express.js, desig
 Changelog:
 - June 21, 2025. Initial setup
 - June 21, 2025. Removed promotional hero banner and feature badges for cleaner UI
+- June 21, 2025. Created dedicated pages for new releases, videos, categories, channels, and featured content
+- June 21, 2025. Implemented pagination system with 6 videos per page on homepage and 18 on videos page
+- June 21, 2025. Updated navigation to use dedicated page routes instead of query parameters
 ```
 
 ## User Preferences

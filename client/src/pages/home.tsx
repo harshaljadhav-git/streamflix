@@ -6,6 +6,7 @@ import VideoCard from "@/components/video-card";
 import VideoModal from "@/components/video-modal";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Video } from "@shared/schema";
 import { categories } from "@shared/schema";
 
@@ -13,6 +14,8 @@ export default function Home() {
   const [location] = useLocation();
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 6;
 
   // Parse URL parameters
   const urlParams = new URLSearchParams(location.split('?')[1] || '');
@@ -45,6 +48,21 @@ export default function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedVideo(null);
+  };
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, categoryFilter, featuredFilter]);
+
+  // Pagination logic for main videos
+  const totalPages = Math.ceil(videos.length / videosPerPage);
+  const startIndex = (currentPage - 1) * videosPerPage;
+  const paginatedVideos = videos.slice(startIndex, startIndex + videosPerPage);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const renderVideoGrid = (videos: Video[], title: string, showAll = false) => {
@@ -157,24 +175,84 @@ export default function Home() {
         {/* Search Results */}
         {searchQuery && (
           <section className="mb-12">
-            <div className="bg-black text-white py-3 px-4 mb-6 font-semibold rounded">
-              🔍 Search Results for "{searchQuery}"
+            <div className="bg-black text-white py-3 px-4 mb-6 font-semibold rounded flex items-center justify-between">
+              <span>🔍 Search Results for "{searchQuery}"</span>
+              <span className="text-sm text-gray-400">
+                Page {currentPage} of {totalPages} ({videos.length} total)
+              </span>
             </div>
             {videos.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-400 text-lg">No videos found for your search.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                {videos.map((video) => (
-                  <VideoCard
-                    key={video.id}
-                    video={video}
-                    size="small"
-                    onClick={() => handleVideoClick(video)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mb-8">
+                  {paginatedVideos.map((video) => (
+                    <VideoCard
+                      key={video.id}
+                      video={video}
+                      size="small"
+                      onClick={() => handleVideoClick(video)}
+                    />
+                  ))}
+                </div>
+                
+                {/* Pagination for Search */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      onClick={() => goToPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Previous
+                    </Button>
+
+                    <div className="flex space-x-1">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let page;
+                        if (totalPages <= 5) {
+                          page = i + 1;
+                        } else if (currentPage <= 3) {
+                          page = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          page = totalPages - 4 + i;
+                        } else {
+                          page = currentPage - 2 + i;
+                        }
+
+                        return (
+                          <Button
+                            key={page}
+                            variant={currentPage === page ? "default" : "ghost"}
+                            onClick={() => goToPage(page)}
+                            className={`w-10 h-10 ${
+                              currentPage === page 
+                                ? "bg-purple-primary text-white" 
+                                : "text-gray-400 hover:text-white"
+                            }`}
+                          >
+                            {page}
+                          </Button>
+                        );
+                      })}
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      onClick={() => goToPage(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         )}
@@ -182,24 +260,84 @@ export default function Home() {
         {/* Category Results */}
         {categoryFilter && (
           <section className="mb-12">
-            <div className="bg-black text-white py-3 px-4 mb-6 font-semibold rounded">
-              📁 {categoryFilter.toUpperCase()} Category
+            <div className="bg-black text-white py-3 px-4 mb-6 font-semibold rounded flex items-center justify-between">
+              <span>📁 {categoryFilter.toUpperCase()} Category</span>
+              <span className="text-sm text-gray-400">
+                Page {currentPage} of {totalPages} ({videos.length} total)
+              </span>
             </div>
             {videos.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-400 text-lg">No videos found in this category.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                {videos.map((video) => (
-                  <VideoCard
-                    key={video.id}
-                    video={video}
-                    size="small"
-                    onClick={() => handleVideoClick(video)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mb-8">
+                  {paginatedVideos.map((video) => (
+                    <VideoCard
+                      key={video.id}
+                      video={video}
+                      size="small"
+                      onClick={() => handleVideoClick(video)}
+                    />
+                  ))}
+                </div>
+                
+                {/* Pagination for Category */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      onClick={() => goToPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Previous
+                    </Button>
+
+                    <div className="flex space-x-1">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let page;
+                        if (totalPages <= 5) {
+                          page = i + 1;
+                        } else if (currentPage <= 3) {
+                          page = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          page = totalPages - 4 + i;
+                        } else {
+                          page = currentPage - 2 + i;
+                        }
+
+                        return (
+                          <Button
+                            key={page}
+                            variant={currentPage === page ? "default" : "ghost"}
+                            onClick={() => goToPage(page)}
+                            className={`w-10 h-10 ${
+                              currentPage === page 
+                                ? "bg-purple-primary text-white" 
+                                : "text-gray-400 hover:text-white"
+                            }`}
+                          >
+                            {page}
+                          </Button>
+                        );
+                      })}
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      onClick={() => goToPage(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         )}
